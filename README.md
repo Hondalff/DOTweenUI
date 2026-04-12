@@ -6,8 +6,8 @@ Lightweight UI animation system for Unity based on DOTween.
 
 ## 🌍 Languages
 
-- 🇬🇧 [English](https://github.com/Hondalff/DOTweenUI#English)
-- 🇷🇺 Русский
+- 🇬🇧 [English](#english)
+- 🇷🇺 [Русский](#русский)
 
 ---
 
@@ -45,9 +45,9 @@ https://github.com/Hondalff/DOTweenUI.git
 1. Add `DOTweenUI` to a UI object
 2. Add animation entry
 3. Select:
-    - Trigger
-    - Animation Type
-    - Target
+   - Trigger
+   - Animation Type
+   - Target
 4. Configure duration, ease, etc.
 
 ---
@@ -76,7 +76,7 @@ Use Inspector buttons to preview animations without Play Mode.
 
 ---
 
-# 🇷🇺 Русский
+# Русский
 
 ## Обзор
 
