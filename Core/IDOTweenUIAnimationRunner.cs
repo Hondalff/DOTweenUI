@@ -6,6 +6,6 @@ namespace DOTweenUI
     {
         DOTweenUIAnimationType AnimationType { get; }
 
-        Tween CreateTween(DOTweenUI ui, DOTweenUIEntry entry);
+        Tween CreateTween(DOTweenUIEntry entry);
     }
 }

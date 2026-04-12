@@ -8,10 +8,10 @@ namespace DOTweenUI.Runners
     {
         public DOTweenUIAnimationType AnimationType => DOTweenUIAnimationType.Scale;
 
-        public Tween CreateTween(DOTweenUI ui, DOTweenUIEntry entry)
+        public Tween CreateTween(DOTweenUIEntry entry)
         {
             DOTweenUIScaleSettings settings = entry.ScaleSettings;
-            Transform target = ui.transform;
+            Transform target = entry.ScaleSettings.Transform;
             float duration = entry.PlaybackSettings.Duration;
 
             Vector3 endValue = ResolveTarget(target, settings);

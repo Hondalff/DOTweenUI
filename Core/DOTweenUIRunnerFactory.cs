@@ -7,17 +7,18 @@ namespace DOTweenUI
     public class DOTweenUIRunnerFactory
     {
         private readonly Dictionary<DOTweenUIAnimationType, IDOTweenUIAnimationRunner> _runners;
-        
+
         public DOTweenUIRunnerFactory()
         {
             _runners = new Dictionary<DOTweenUIAnimationType, IDOTweenUIAnimationRunner>
             {
-                { DOTweenUIAnimationType.Move, new DOTweenUIMoveRunner()},
-                { DOTweenUIAnimationType.Scale, new DOTweenUIScaleRunner()}
-
+                { DOTweenUIAnimationType.Move, new DOTweenUIMoveRunner() },
+                { DOTweenUIAnimationType.Scale, new DOTweenUIScaleRunner() },
+                { DOTweenUIAnimationType.Rotate, new DOTweenUIRotateRunner() },
+                { DOTweenUIAnimationType.CanvasGroup, new DOTweenUICanvasGroupRunner() },
             };
         }
-        
+
         public IDOTweenUIAnimationRunner Get(DOTweenUIAnimationType animationType)
         {
             if (_runners.TryGetValue(animationType, out IDOTweenUIAnimationRunner runner))

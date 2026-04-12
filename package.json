@@ -1,0 +1,17 @@
+{
+  "name": "com.dotweenui",
+  "version": "0.1.0",
+  "displayName": "DOTween UI",
+  "description": "Lightweight extensible DOTween-based UI animation package for Unity. Supports Move, Scale, Rotate and CanvasGroup animations with trigger-based playback.",
+  "unity": "2021.3",
+  "author": {
+    "name": "Dmitriy Baturinets"
+  },
+  "keywords": [
+    "unity",
+    "dotween",
+    "ui",
+    "animation",
+    "upm"
+  ]
+}

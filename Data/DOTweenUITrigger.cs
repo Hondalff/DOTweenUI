@@ -10,6 +10,6 @@ namespace DOTweenUI
         PointerExit,
         PointerDown,
         PointerUp,
-        Click
+        Click,
     }
 }

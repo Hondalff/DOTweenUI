@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 namespace DOTweenUI
 {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(RectTransform))]
     public class DOTweenUI : MonoBehaviour,
         IPointerEnterHandler,
         IPointerExitHandler,
@@ -14,30 +13,22 @@ namespace DOTweenUI
         IPointerUpHandler,
         IPointerClickHandler
     {
-        [SerializeField] private bool playOnStart;
         [SerializeField] private bool killTweensOnDisable = true;
         [SerializeField] private bool debugLogs;
         [SerializeField] private List<DOTweenUIEntry> animations = new();
 
-        private RectTransform rectTransform;
         private DOTweenUIRuntimeStore runtimeStore;
         private DOTweenUIRunnerFactory runnerFactory;
 
-        public RectTransform RectTransform => rectTransform;
-
         private void Awake()
         {
-            rectTransform = GetComponent<RectTransform>();
             runtimeStore = new DOTweenUIRuntimeStore();
             runnerFactory = new DOTweenUIRunnerFactory();
         }
 
         private void Start()
         {
-            if (playOnStart)
-            {
-                Play(DOTweenUITrigger.OnStart);
-            }
+            Play(DOTweenUITrigger.OnStart);
         }
 
         private void OnEnable()
@@ -94,11 +85,6 @@ namespace DOTweenUI
 
         public void Play(DOTweenUITrigger trigger)
         {
-            if (rectTransform == null)
-            {
-                rectTransform = GetComponent<RectTransform>();
-            }
-
             if (debugLogs)
             {
                 Debug.Log($"[{name}] Play trigger: {trigger}", this);
@@ -149,7 +135,7 @@ namespace DOTweenUI
             }
 
             IDOTweenUIAnimationRunner runner = runnerFactory.Get(entry.AnimationType);
-            Tween tween = runner.CreateTween(this, entry);
+            Tween tween = runner.CreateTween(entry);
 
             if (tween == null)
             {
@@ -163,7 +149,7 @@ namespace DOTweenUI
 
             ApplyPlaybackSettings(tween, playback);
 
-            tween.OnPlay(() =>
+            AppendOnPlay(tween, () =>
             {
                 if (debugLogs)
                 {
@@ -171,7 +157,7 @@ namespace DOTweenUI
                 }
             });
 
-            tween.OnComplete(() =>
+            AppendOnComplete(tween, () =>
             {
                 if (debugLogs)
                 {
@@ -179,7 +165,7 @@ namespace DOTweenUI
                 }
             });
 
-            tween.OnKill(() =>
+            AppendOnKill(tween, () =>
             {
                 runtimeStore.Remove(entry);
 
@@ -201,6 +187,36 @@ namespace DOTweenUI
                 .SetLoops(loops, playback.LoopType)
                 .SetAutoKill(playback.AutoKill)
                 .SetUpdate(playback.UpdateMode == DOTweenUIAnimationUpdate.Unscaled);
+        }
+
+        private static void AppendOnPlay(Tween tween, TweenCallback callback)
+        {
+            TweenCallback previous = tween.onPlay;
+            tween.onPlay = () =>
+            {
+                previous?.Invoke();
+                callback?.Invoke();
+            };
+        }
+
+        private static void AppendOnComplete(Tween tween, TweenCallback callback)
+        {
+            TweenCallback previous = tween.onComplete;
+            tween.onComplete = () =>
+            {
+                previous?.Invoke();
+                callback?.Invoke();
+            };
+        }
+
+        private static void AppendOnKill(Tween tween, TweenCallback callback)
+        {
+            TweenCallback previous = tween.onKill;
+            tween.onKill = () =>
+            {
+                previous?.Invoke();
+                callback?.Invoke();
+            };
         }
     }
 }

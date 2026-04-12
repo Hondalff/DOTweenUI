@@ -4,5 +4,7 @@ namespace DOTweenUI
     {
         Move = 0,
         Scale,
+        Rotate,
+        CanvasGroup,
     }
 }

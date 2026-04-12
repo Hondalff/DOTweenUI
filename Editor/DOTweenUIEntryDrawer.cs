@@ -39,6 +39,12 @@ namespace DOTweenUI.Editor
                     case DOTweenUIAnimationType.Scale:
                         height += GetHeight(property, "scaleSettings");
                         break;
+                    case DOTweenUIAnimationType.Rotate:
+                        height += GetHeight(property, "rotateSettings");
+                        break;
+                    case DOTweenUIAnimationType.CanvasGroup:
+                        height += GetHeight(property, "canvasGroupSettings");
+                        break;
                 }
             }
 
@@ -54,10 +60,13 @@ namespace DOTweenUI.Editor
             SerializedProperty playbackProp = property.FindPropertyRelative("playbackSettings");
             SerializedProperty moveSettingsProp = property.FindPropertyRelative("moveSettings");
             SerializedProperty scaleSettingsProp = property.FindPropertyRelative("scaleSettings");
+            SerializedProperty rotateSettingsProp = property.FindPropertyRelative("rotateSettings");
+            SerializedProperty canvasGroupSettingsProp = property.FindPropertyRelative("canvasGroupSettings");
 
             if (enabledProp == null || idProp == null || triggerProp == null ||
                 animationTypeProp == null || playbackProp == null ||
-                moveSettingsProp == null || scaleSettingsProp == null)
+                moveSettingsProp == null || scaleSettingsProp == null || rotateSettingsProp == null
+                || canvasGroupSettingsProp == null)
             {
                 EditorGUI.LabelField(position, label.text, "DOTweenUIEntryDrawer: property not found");
                 return;
@@ -95,6 +104,12 @@ namespace DOTweenUI.Editor
 
                 case DOTweenUIAnimationType.Scale:
                     DrawProperty(ref rect, scaleSettingsProp);
+                    break;
+                case DOTweenUIAnimationType.Rotate:
+                    DrawProperty(ref rect, rotateSettingsProp);
+                    break;
+                case DOTweenUIAnimationType.CanvasGroup:
+                    DrawProperty(ref rect, canvasGroupSettingsProp);
                     break;
             }
 

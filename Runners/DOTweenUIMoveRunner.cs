@@ -7,10 +7,10 @@ namespace DOTweenUI.Runners
     {
         public DOTweenUIAnimationType AnimationType => DOTweenUIAnimationType.Move;
 
-        public Tween CreateTween(DOTweenUI ui, DOTweenUIEntry entry)
+        public Tween CreateTween(DOTweenUIEntry entry)
         {
             DOTweenUIMoveSettings settings = entry.MoveSettings;
-            RectTransform rectTransform = ui.RectTransform;
+            RectTransform rectTransform = entry.MoveSettings.RectTransform;
             float duration = entry.PlaybackSettings.Duration;
 
             Vector2 target = ResolveTarget(rectTransform, settings);

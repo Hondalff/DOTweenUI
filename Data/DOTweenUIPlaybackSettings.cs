@@ -10,7 +10,7 @@ namespace DOTweenUI
         [SerializeField, Min(0f)] private float delay = 0f;
         [SerializeField, Min(0f)] private float duration = 0.3f;
         [SerializeField] private Ease ease = Ease.Linear;
-        [SerializeField] private int loops = 1;
+        [SerializeField, Range(-1, 100)] private int loops = 1;
         [SerializeField] private LoopType loopType = LoopType.Restart;
         [SerializeField] private bool autoKill = true;
         [SerializeField] private bool killPreviousTweenBeforePlay = true;

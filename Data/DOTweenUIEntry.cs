@@ -13,6 +13,8 @@ namespace DOTweenUI
         [SerializeField] private DOTweenUIPlaybackSettings playbackSettings = new();
         [SerializeField] private DOTweenUIMoveSettings moveSettings = new();
         [SerializeField] private DOTweenUIScaleSettings scaleSettings = new();
+        [SerializeField] private DOTweenUIRotateSettings rotateSettings = new();
+        [SerializeField] private DOTweenUICanvasGroupSettings canvasGroupSettings = new();
 
         public string Id => id;
         public bool Enabled => enabled;
@@ -21,5 +23,7 @@ namespace DOTweenUI
         public DOTweenUIPlaybackSettings PlaybackSettings => playbackSettings;
         public DOTweenUIMoveSettings MoveSettings => moveSettings;
         public DOTweenUIScaleSettings ScaleSettings => scaleSettings;
+        public DOTweenUIRotateSettings RotateSettings => rotateSettings;
+        public DOTweenUICanvasGroupSettings CanvasGroupSettings => canvasGroupSettings;
     }
 }
