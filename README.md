@@ -21,7 +21,7 @@ Extensible UI animation package for Unity based on DOTween.
 
 Open Unity Package Manager and add package from Git URL:
 
-`https://github.com/Hondalff/DOTweenUI.git#0.1.0`
+`https://github.com/Hondalff/DOTweenUI.git`
 
 ## Basic Usage
 
