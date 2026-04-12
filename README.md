@@ -19,21 +19,16 @@ Extensible UI animation package for Unity based on DOTween.
 
 ## Installation
 
-### Via Git URL
-
 Open Unity Package Manager and add package from Git URL:
 
 `https://github.com/Hondalff/DOTweenUI.git#0.1.0`
-
-If package is stored in a subfolder:
-
-`https://github.com/Hondalff/DOTweenUI.git?path=/Packages/com.dotweenui#0.1.0`
 
 ## Basic Usage
 
 Add `DOTweenUI` to a UI object and configure animation entries in the inspector.
 
-Supported triggers:
+### Supported triggers
+
 - OnEnable
 - OnDisable
 - OnStart
@@ -44,7 +39,8 @@ Supported triggers:
 - Click
 - Manual
 
-Supported animation types:
+### Supported animation types
+
 - Move
 - Scale
 - Rotate
@@ -52,4 +48,4 @@ Supported animation types:
 
 ## Notes
 
-This package expects DOTween to be already installed in the project.
+This package expects DOTween to already be installed in the project.
