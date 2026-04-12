@@ -1,8 +1,7 @@
 using DG.Tweening;
-using DOTweenUI;
 using UnityEngine;
 
-namespace DOTweenUI.Runners
+namespace DOTweenUI
 {
     public class DOTweenUIScaleRunner : IDOTweenUIAnimationRunner
     {

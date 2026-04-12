@@ -2,9 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace DOTweenUI.Editor
+namespace DOTweenUI
 {
-    [CustomPropertyDrawer(typeof(DOTweenUIEntry))]
+    [CustomPropertyDrawer(typeof(global::DOTweenUI.DOTweenUIEntry))]
     public class DOTweenUIEntryDrawer : PropertyDrawer
     {
         private const float Space = 2f;

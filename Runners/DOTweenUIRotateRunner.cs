@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace DOTweenUI.Runners
+namespace DOTweenUI
 {
     public class DOTweenUIRotateRunner : IDOTweenUIAnimationRunner
     {
