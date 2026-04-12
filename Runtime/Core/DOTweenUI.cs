@@ -20,10 +20,11 @@ namespace DOTweenUI
         private DOTweenUIRuntimeStore runtimeStore;
         private DOTweenUIRunnerFactory runnerFactory;
 
+        public IReadOnlyList<DOTweenUIEntry> Animations => animations;
+
         private void Awake()
         {
-            runtimeStore = new DOTweenUIRuntimeStore();
-            runnerFactory = new DOTweenUIRunnerFactory();
+            EnsureInitialized();
         }
 
         private void Start()
@@ -85,6 +86,8 @@ namespace DOTweenUI
 
         public void Play(DOTweenUITrigger trigger)
         {
+            EnsureInitialized();
+
             if (debugLogs)
             {
                 Debug.Log($"[{name}] Play trigger: {trigger}", this);
@@ -123,6 +126,24 @@ namespace DOTweenUI
         public void StopAll()
         {
             runtimeStore.KillAll();
+        }
+
+        public Tween CreatePreviewTween(DOTweenUIEntry entry)
+        {
+            if (entry == null || !entry.Enabled)
+                return null;
+
+            EnsureInitialized();
+
+            IDOTweenUIAnimationRunner runner = runnerFactory.Get(entry.AnimationType);
+            Tween tween = runner.CreateTween(entry);
+
+            if (tween == null)
+                return null;
+
+            ApplyPlaybackSettings(tween, entry.PlaybackSettings);
+
+            return tween;
         }
 
         private void PlayEntry(DOTweenUIEntry entry, int index)
@@ -176,6 +197,12 @@ namespace DOTweenUI
             });
 
             runtimeStore.Register(entry, tween);
+        }
+
+        private void EnsureInitialized()
+        {
+            runtimeStore ??= new DOTweenUIRuntimeStore();
+            runnerFactory ??= new DOTweenUIRunnerFactory();
         }
 
         private static void ApplyPlaybackSettings(Tween tween, DOTweenUIPlaybackSettings playback)

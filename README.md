@@ -1,51 +1,139 @@
 # DOTween UI
 
-Extensible UI animation package for Unity based on DOTween.
+Lightweight UI animation system for Unity based on DOTween.
+
+---
+
+## 🌍 Languages
+
+- 🇬🇧 [English](https://github.com/Hondalff/DOTweenUI#English)
+- 🇷🇺 Русский
+
+---
+
+# English
+
+## Overview
+
+DOTween UI allows you to create UI animations directly in the Inspector using triggers.
+
+---
 
 ## Features
 
-- Trigger-based UI animations
-- Move
-- Scale
-- Rotate
-- CanvasGroup fade
-- Custom editor drawer for animation entries
-- UPM install via Git URL
+- Trigger-based animations
+- Move / Scale / Rotate / Fade (CanvasGroup)
+- Multiple animations per object
+- Editor Preview (no Play Mode)
+- Easy to extend
+
+---
+
+## Installation (UPM)
+https://github.com/Hondalff/DOTweenUI.git
+---
 
 ## Requirements
 
 - Unity 2021.3+
-- DOTween installed in project
+- DOTween installed
 
-## Installation
+---
 
-Open Unity Package Manager and add package from Git URL:
+## Usage
 
-`https://github.com/Hondalff/DOTweenUI.git`
+1. Add `DOTweenUI` to a UI object
+2. Add animation entry
+3. Select:
+    - Trigger
+    - Animation Type
+    - Target
+4. Configure duration, ease, etc.
 
-## Basic Usage
+---
 
-Add `DOTweenUI` to a UI object and configure animation entries in the inspector.
+## Triggers
 
-### Supported triggers
-
-- OnEnable
-- OnDisable
 - OnStart
-- PointerEnter
-- PointerExit
-- PointerDown
-- PointerUp
+- OnEnable / OnDisable
+- PointerEnter / Exit
+- PointerDown / Up
 - Click
 - Manual
 
-### Supported animation types
+---
 
-- Move
-- Scale
-- Rotate
-- CanvasGroup
+## Preview
+
+Use Inspector buttons to preview animations without Play Mode.
+
+---
 
 ## Notes
 
-This package expects DOTween to already be installed in the project.
+- Avoid multiple animations on the same property at the same time
+- Infinite loops must be stopped manually
+
+---
+
+# 🇷🇺 Русский
+
+## Обзор
+
+DOTween UI — система анимации UI в Unity через инспектор и триггеры.
+
+---
+
+## Возможности
+
+- Анимации по триггерам
+- Move / Scale / Rotate / Fade
+- Несколько анимаций на объект
+- Preview в редакторе
+- Расширяемая система
+
+---
+
+## Установка
+https://github.com/Hondalff/DOTweenUI.git
+---
+
+## Требования
+
+- Unity 2021.3+
+- DOTween
+
+---
+
+## Использование
+
+1. Добавь `DOTweenUI` на объект
+2. Добавь анимацию
+3. Настрой:
+   - Trigger
+   - Тип
+   - Target
+
+---
+
+## Триггеры
+
+- OnStart
+- OnEnable / OnDisable
+- PointerEnter / Exit
+- PointerDown / Up
+- Click
+- Manual
+
+---
+
+## Preview
+
+Можно запускать анимации прямо в редакторе.
+
+---
+
+## Важно
+
+- Не накладывай анимации на одно свойство
+- Бесконечные циклы нужно останавливать вручную

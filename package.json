@@ -1,6 +1,6 @@
 {
   "name": "com.hondalff.dotweenui",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "displayName": "DOTween UI",
   "description": "Lightweight extensible DOTween-based UI animation package for Unity. Supports Move, Scale, Rotate and CanvasGroup animations with trigger-based playback.",
   "unity": "2021.3",
