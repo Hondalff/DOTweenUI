@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace DOTweenUI
 {
-    [CustomPropertyDrawer(typeof(global::DOTweenUI.DOTweenUIEntry))]
+    [CustomPropertyDrawer(typeof(DOTweenUIEntry))]
     public class DOTweenUIEntryDrawer : PropertyDrawer
     {
         private const float Space = 2f;
+        private const float SectionSpace = 6f;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -47,7 +48,10 @@ namespace DOTweenUI
                         break;
                 }
             }
-
+            
+            height += SectionSpace;
+            height += GetHeight(property, "events");
+            
             return height;
         }
 
@@ -62,11 +66,12 @@ namespace DOTweenUI
             SerializedProperty scaleSettingsProp = property.FindPropertyRelative("scaleSettings");
             SerializedProperty rotateSettingsProp = property.FindPropertyRelative("rotateSettings");
             SerializedProperty canvasGroupSettingsProp = property.FindPropertyRelative("canvasGroupSettings");
+            SerializedProperty eventsProp = property.FindPropertyRelative("events");
 
             if (enabledProp == null || idProp == null || triggerProp == null ||
                 animationTypeProp == null || playbackProp == null ||
                 moveSettingsProp == null || scaleSettingsProp == null || rotateSettingsProp == null
-                || canvasGroupSettingsProp == null)
+                || canvasGroupSettingsProp == null || eventsProp == null)
             {
                 EditorGUI.LabelField(position, label.text, "DOTweenUIEntryDrawer: property not found");
                 return;
@@ -112,6 +117,9 @@ namespace DOTweenUI
                     DrawProperty(ref rect, canvasGroupSettingsProp);
                     break;
             }
+            
+            rect.y += SectionSpace;
+            DrawProperty(ref rect, eventsProp);
 
             EditorGUI.indentLevel--;
         }

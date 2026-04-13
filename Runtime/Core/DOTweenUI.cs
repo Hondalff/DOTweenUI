@@ -172,6 +172,8 @@ namespace DOTweenUI
 
             AppendOnPlay(tween, () =>
             {
+                entry.Events.OnPlay?.Invoke();
+                
                 if (debugLogs)
                 {
                     Debug.Log($"[{name}] Tween started. Entry = {entry.Id}, Index = {index}", this);
@@ -180,6 +182,8 @@ namespace DOTweenUI
 
             AppendOnComplete(tween, () =>
             {
+                entry.Events.OnComplete?.Invoke();
+                
                 if (debugLogs)
                 {
                     Debug.Log($"[{name}] Tween completed. Entry = {entry.Id}, Index = {index}", this);
@@ -188,6 +192,7 @@ namespace DOTweenUI
 
             AppendOnKill(tween, () =>
             {
+                entry.Events.OnKill?.Invoke();
                 runtimeStore.Remove(entry);
 
                 if (debugLogs)

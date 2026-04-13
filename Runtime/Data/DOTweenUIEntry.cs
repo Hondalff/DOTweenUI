@@ -15,6 +15,8 @@ namespace DOTweenUI
         [SerializeField] private DOTweenUIScaleSettings scaleSettings = new();
         [SerializeField] private DOTweenUIRotateSettings rotateSettings = new();
         [SerializeField] private DOTweenUICanvasGroupSettings canvasGroupSettings = new();
+        
+        [SerializeField] private DOTweenUIEvents events = new();
 
         public string Id => id;
         public bool Enabled => enabled;
@@ -25,5 +27,6 @@ namespace DOTweenUI
         public DOTweenUIScaleSettings ScaleSettings => scaleSettings;
         public DOTweenUIRotateSettings RotateSettings => rotateSettings;
         public DOTweenUICanvasGroupSettings CanvasGroupSettings => canvasGroupSettings;
+        public DOTweenUIEvents Events => events;
     }
 }
