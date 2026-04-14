@@ -12,10 +12,10 @@ namespace DOTweenUI.Editor
         private static readonly List<Tween> ActivePreviewTweens = new();
         private static readonly string PreviewTweenId = "DOTweenUI_EditorPreview";
 
-        private static PreviewSnapshot currentSnapshot;
-        private static bool isPreviewing;
-        private static double lastEditorTime;
-        private static bool dotweenEditorInitialized;
+        private static PreviewSnapshot _currentSnapshot;
+        private static bool _isPreviewing;
+        private static double _lastEditorTime;
+        private static bool _dotweenEditorInitialized;
 
         public override void OnInspectorGUI()
         {
@@ -80,63 +80,47 @@ namespace DOTweenUI.Editor
 
             StopPreview(restoreState: true);
 
-            if (!dotweenEditorInitialized)
+            if (!_dotweenEditorInitialized)
             {
                 DOTween.Init();
-                dotweenEditorInitialized = true;
+                _dotweenEditorInitialized = true;
             }
 
-            currentSnapshot = PreviewSnapshot.Capture(component);
+            _currentSnapshot = PreviewSnapshot.Capture(component);
             ActivePreviewTweens.Clear();
 
-            IReadOnlyList<DOTweenUIEntry> entries = component.Animations;
-            for (int i = 0; i < entries.Count; i++)
+            Tween previewSequence = component.CreatePreviewSequence(trigger);
+
+            if (previewSequence == null)
             {
-                DOTweenUIEntry entry = entries[i];
-
-                if (entry == null || !entry.Enabled)
-                    continue;
-
-                if (entry.Trigger != trigger)
-                    continue;
-
-                Tween tween = component.CreatePreviewTween(entry);
-
-                if (tween == null)
-                    continue;
-
-                tween.SetId(PreviewTweenId);
-                tween.SetUpdate(UpdateType.Manual, true);
-                tween.SetAutoKill(true);
-
-                ActivePreviewTweens.Add(tween);
-            }
-
-            if (ActivePreviewTweens.Count == 0)
-            {
-                currentSnapshot?.Restore();
-                currentSnapshot = null;
+                _currentSnapshot?.Restore();
+                _currentSnapshot = null;
                 return;
             }
 
-            lastEditorTime = EditorApplication.timeSinceStartup;
+            previewSequence.SetId(PreviewTweenId);
+            previewSequence.SetUpdate(UpdateType.Manual, true);
+            previewSequence.SetAutoKill(true);
+
+            ActivePreviewTweens.Add(previewSequence);
+            _lastEditorTime = EditorApplication.timeSinceStartup;
 
             EditorApplication.update -= UpdatePreview;
             EditorApplication.update += UpdatePreview;
 
-            isPreviewing = true;
+            _isPreviewing = true;
 
             SceneView.RepaintAll();
         }
 
         private static void UpdatePreview()
         {
-            if (!isPreviewing)
+            if (!_isPreviewing)
                 return;
 
             double now = EditorApplication.timeSinceStartup;
-            float deltaTime = (float)(now - lastEditorTime);
-            lastEditorTime = now;
+            float deltaTime = (float)(now - _lastEditorTime);
+            _lastEditorTime = now;
 
             if (deltaTime < 0f)
                 deltaTime = 0f;
@@ -167,7 +151,7 @@ namespace DOTweenUI.Editor
         private static void StopPreview(bool restoreState)
         {
             EditorApplication.update -= UpdatePreview;
-            isPreviewing = false;
+            _isPreviewing = false;
 
             DOTween.Kill(PreviewTweenId);
 
@@ -185,10 +169,10 @@ namespace DOTweenUI.Editor
 
             if (restoreState)
             {
-                currentSnapshot?.Restore();
+                _currentSnapshot?.Restore();
             }
 
-            currentSnapshot = null;
+            _currentSnapshot = null;
             SceneView.RepaintAll();
         }
 

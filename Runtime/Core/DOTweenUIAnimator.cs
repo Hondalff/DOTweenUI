@@ -17,8 +17,8 @@ namespace DOTweenUI
         [SerializeField] private bool debugLogs;
         [SerializeField] private List<DOTweenUIEntry> animations = new();
 
-        private DOTweenUIRuntimeStore _runtimeStore;
-        private DOTweenUIRunnerFactory _runnerFactory;
+        private DOTweenUIRuntimeStore runtimeStore;
+        private DOTweenUIRunnerFactory runnerFactory;
 
         public IReadOnlyList<DOTweenUIEntry> Animations => animations;
 
@@ -41,7 +41,7 @@ namespace DOTweenUI
         {
             if (killTweensOnDisable)
             {
-                _runtimeStore?.KillAll();
+                runtimeStore?.KillAll();
                 return;
             }
 
@@ -50,7 +50,7 @@ namespace DOTweenUI
 
         private void OnDestroy()
         {
-            _runtimeStore?.KillAll();
+            runtimeStore?.KillAll();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -93,6 +93,11 @@ namespace DOTweenUI
                 Debug.Log($"[{name}] Play trigger: {trigger}", this);
             }
 
+            runtimeStore.Kill(trigger);
+
+            Sequence sequence = DOTween.Sequence();
+            bool hasTweens = false;
+
             for (int i = 0; i < animations.Count; i++)
             {
                 DOTweenUIEntry entry = animations[i];
@@ -103,29 +108,51 @@ namespace DOTweenUI
                 if (entry.Trigger != trigger)
                     continue;
 
-                PlayEntry(entry, i);
+                Tween tween = CreateConfiguredTween(entry, i);
+                if (tween == null)
+                    continue;
+
+                hasTweens = true;
+
+                switch (entry.CompositionMode)
+                {
+                    case DOTweenUICompositionMode.Append:
+                        sequence.Append(tween);
+                        break;
+
+                    case DOTweenUICompositionMode.Join:
+                        sequence.Join(tween);
+                        break;
+                }
             }
+
+            if (!hasTweens)
+            {
+                sequence.Kill();
+                return;
+            }
+
+            sequence.OnKill(() =>
+            {
+                runtimeStore.Remove(trigger);
+
+                if (debugLogs)
+                {
+                    Debug.Log($"[{name}] Sequence killed. Trigger = {trigger}", this);
+                }
+            });
+
+            runtimeStore.Register(trigger, sequence);
         }
 
         public void Stop(DOTweenUITrigger trigger)
         {
-            for (int i = 0; i < animations.Count; i++)
-            {
-                DOTweenUIEntry entry = animations[i];
-
-                if (entry == null)
-                    continue;
-
-                if (entry.Trigger != trigger)
-                    continue;
-
-                _runtimeStore.Kill(entry);
-            }
+            runtimeStore.Kill(trigger);
         }
 
         public void StopAll()
         {
-            _runtimeStore.KillAll();
+            runtimeStore.KillAll();
         }
 
         public Tween CreatePreviewTween(DOTweenUIEntry entry)
@@ -135,79 +162,117 @@ namespace DOTweenUI
 
             EnsureInitialized();
 
-            IDOTweenUIAnimationRunner runner = _runnerFactory.Get(entry.AnimationType);
-            Tween tween = runner.CreateTween(entry);
-
-            if (tween == null)
-                return null;
-
-            ApplyPlaybackSettings(tween, entry.PlaybackSettings);
-
+            Tween tween = CreateConfiguredTween(entry, -1, false);
             return tween;
         }
 
-        private void PlayEntry(DOTweenUIEntry entry, int index)
+        public Tween CreatePreviewSequence(DOTweenUITrigger trigger)
         {
-            DOTweenUIPlaybackSettings playback = entry.PlaybackSettings;
+            if (animations == null || animations.Count == 0)
+                return null;
 
-            if (playback.KillPreviousTweenBeforePlay)
+            EnsureInitialized();
+
+            Sequence sequence = DOTween.Sequence();
+            bool hasTweens = false;
+
+            for (int i = 0; i < animations.Count; i++)
             {
-                _runtimeStore.Kill(entry);
+                DOTweenUIEntry entry = animations[i];
+
+                if (entry == null || !entry.Enabled)
+                    continue;
+
+                if (entry.Trigger != trigger)
+                    continue;
+
+                Tween tween = CreateConfiguredTween(entry, i, false);
+                if (tween == null)
+                    continue;
+
+                hasTweens = true;
+
+                switch (entry.CompositionMode)
+                {
+                    case DOTweenUICompositionMode.Append:
+                        sequence.Append(tween);
+                        break;
+
+                    case DOTweenUICompositionMode.Join:
+                        sequence.Join(tween);
+                        break;
+                }
             }
 
-            IDOTweenUIAnimationRunner runner = _runnerFactory.Get(entry.AnimationType);
+            if (!hasTweens)
+            {
+                sequence.Kill();
+                return null;
+            }
+
+            return sequence;
+        }
+
+        private Tween CreateConfiguredTween(DOTweenUIEntry entry, int index, bool invokeEvents = true)
+        {
+            if (entry == null)
+                return null;
+
+            IDOTweenUIAnimationRunner runner = runnerFactory.Get(entry.AnimationType);
             Tween tween = runner.CreateTween(entry);
 
             if (tween == null)
             {
-                if (debugLogs)
+                if (debugLogs && index >= 0)
                 {
                     Debug.LogWarning($"[{name}] Tween was not created. Entry = {entry.Id}, Index = {index}", this);
                 }
 
-                return;
+                return null;
             }
 
-            ApplyPlaybackSettings(tween, playback);
+            ApplyPlaybackSettings(tween, entry.PlaybackSettings);
 
-            AppendOnPlay(tween, () =>
+            if (invokeEvents)
             {
-                entry.Events.OnPlay?.Invoke();
-                
-                if (debugLogs)
+                AppendOnPlay(tween, () =>
                 {
-                    Debug.Log($"[{name}] Tween started. Entry = {entry.Id}, Index = {index}", this);
-                }
-            });
+                    entry.Events.OnPlay?.Invoke();
 
-            AppendOnComplete(tween, () =>
-            {
-                entry.Events.OnComplete?.Invoke();
-                
-                if (debugLogs)
+                    if (debugLogs && index >= 0)
+                    {
+                        Debug.Log($"[{name}] Tween started. Entry = {entry.Id}, Index = {index}", this);
+                    }
+                });
+
+                AppendOnComplete(tween, () =>
                 {
-                    Debug.Log($"[{name}] Tween completed. Entry = {entry.Id}, Index = {index}", this);
-                }
-            });
+                    entry.Events.OnComplete?.Invoke();
 
-            AppendOnKill(tween, () =>
-            {
-                entry.Events.OnKill?.Invoke();
-                _runtimeStore.Remove(entry);
+                    if (debugLogs && index >= 0)
+                    {
+                        Debug.Log($"[{name}] Tween completed. Entry = {entry.Id}, Index = {index}", this);
+                    }
+                });
 
-                if (debugLogs)
+                AppendOnKill(tween, () =>
                 {
-                    Debug.Log($"[{name}] Tween killed. Entry = {entry.Id}, Index = {index}", this);
-                }
-            });
+                    entry.Events.OnKill?.Invoke();
 
-            _runtimeStore.Register(entry, tween);
+                    if (debugLogs && index >= 0)
+                    {
+                        Debug.Log($"[{name}] Tween killed. Entry = {entry.Id}, Index = {index}", this);
+                    }
+                });
+            }
+
+            return tween;
         }
 
         private void EnsureInitialized()
         {
-            _runtimeStore ??= new DOTweenUIRuntimeStore();
-            _runnerFactory ??= new DOTweenUIRunnerFactory();
+            runtimeStore ??= new DOTweenUIRuntimeStore();
+            runnerFactory ??= new DOTweenUIRunnerFactory();
         }
 
         private static void ApplyPlaybackSettings(Tween tween, DOTweenUIPlaybackSettings playback)

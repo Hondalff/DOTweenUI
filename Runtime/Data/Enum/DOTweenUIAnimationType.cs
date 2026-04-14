@@ -6,5 +6,6 @@ namespace DOTweenUI
         Scale,
         Rotate,
         CanvasGroup,
+        Interval
     }
 }

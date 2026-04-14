@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace DOTweenUI
@@ -6,8 +7,12 @@ namespace DOTweenUI
     [Serializable]
     public class DOTweenUIEvents
     {
-        public UnityEvent OnPlay = new ();
-        public UnityEvent OnComplete = new ();
-        public UnityEvent OnKill = new ();
+        [SerializeField] private UnityEvent onPlay = new();
+        [SerializeField] private UnityEvent onComplete = new();
+        [SerializeField] private UnityEvent onKill = new();
+        
+        public UnityEvent OnPlay => onPlay;
+        public UnityEvent OnComplete => onComplete;
+        public UnityEvent OnKill => onKill;
     }
 }

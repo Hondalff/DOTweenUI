@@ -15,6 +15,8 @@ namespace DOTweenUI
                 { DOTweenUIAnimationType.Scale, new DOTweenUIScaleRunner() },
                 { DOTweenUIAnimationType.Rotate, new DOTweenUIRotateRunner() },
                 { DOTweenUIAnimationType.CanvasGroup, new DOTweenUICanvasGroupRunner() },
+                { DOTweenUIAnimationType.Interval, new DOTweenUIIntervalRunner() },
+                
             };
         }
 

@@ -5,16 +5,22 @@ namespace DOTweenUI
 {
     public class DOTweenUIRuntimeStore
     {
-        private readonly Dictionary<DOTweenUIEntry, Tween> activeTweens = new ();
-        
-        public void Register(DOTweenUIEntry entry, Tween tween)
+        private readonly Dictionary<object, Tween> activeTweens = new();
+
+        public void Register(object key, Tween tween)
         {
-            activeTweens[entry] = tween;
+            if (key == null || tween == null)
+                return;
+
+            activeTweens[key] = tween;
         }
 
-        public void Kill(DOTweenUIEntry entry)
+        public void Kill(object key)
         {
-            if (!activeTweens.TryGetValue(entry, out Tween tween))
+            if (key == null)
+                return;
+
+            if (!activeTweens.TryGetValue(key, out Tween tween))
                 return;
 
             if (tween != null && tween.IsActive())
@@ -23,13 +29,16 @@ namespace DOTweenUI
             }
             else
             {
-                activeTweens.Remove(entry);
+                activeTweens.Remove(key);
             }
         }
 
-        public void Remove(DOTweenUIEntry entry)
+        public void Remove(object key)
         {
-            activeTweens.Remove(entry);
+            if (key == null)
+                return;
+
+            activeTweens.Remove(key);
         }
 
         public void KillAll()
