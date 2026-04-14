@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DOTweenUI.Editor
 {
-    [CustomEditor(typeof(DOTweenUI))]
+    [CustomEditor(typeof(DOTweenUIAnimator))]
     public class DOTweenUIEditor : UnityEditor.Editor
     {
         private static readonly List<Tween> ActivePreviewTweens = new();
@@ -27,34 +27,34 @@ namespace DOTweenUI.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 if (GUILayout.Button("Manual"))
-                    StartPreview((DOTweenUI)target, DOTweenUITrigger.Manual);
+                    StartPreview((DOTweenUIAnimator)target, DOTweenUITrigger.Manual);
 
                 if (GUILayout.Button("On Enable"))
-                    StartPreview((DOTweenUI)target, DOTweenUITrigger.OnEnable);
+                    StartPreview((DOTweenUIAnimator)target, DOTweenUITrigger.OnEnable);
 
                 if (GUILayout.Button("On Disable"))
-                    StartPreview((DOTweenUI)target, DOTweenUITrigger.OnDisable);
+                    StartPreview((DOTweenUIAnimator)target, DOTweenUITrigger.OnDisable);
 
                 if (GUILayout.Button("On Start"))
-                    StartPreview((DOTweenUI)target, DOTweenUITrigger.OnStart);
+                    StartPreview((DOTweenUIAnimator)target, DOTweenUITrigger.OnStart);
             }
 
             using (new EditorGUILayout.HorizontalScope())
             {
                 if (GUILayout.Button("Pointer Enter"))
-                    StartPreview((DOTweenUI)target, DOTweenUITrigger.PointerEnter);
+                    StartPreview((DOTweenUIAnimator)target, DOTweenUITrigger.PointerEnter);
 
                 if (GUILayout.Button("Pointer Exit"))
-                    StartPreview((DOTweenUI)target, DOTweenUITrigger.PointerExit);
+                    StartPreview((DOTweenUIAnimator)target, DOTweenUITrigger.PointerExit);
 
                 if (GUILayout.Button("Pointer Down"))
-                    StartPreview((DOTweenUI)target, DOTweenUITrigger.PointerDown);
+                    StartPreview((DOTweenUIAnimator)target, DOTweenUITrigger.PointerDown);
 
                 if (GUILayout.Button("Pointer Up"))
-                    StartPreview((DOTweenUI)target, DOTweenUITrigger.PointerUp);
+                    StartPreview((DOTweenUIAnimator)target, DOTweenUITrigger.PointerUp);
 
                 if (GUILayout.Button("Click"))
-                    StartPreview((DOTweenUI)target, DOTweenUITrigger.Click);
+                    StartPreview((DOTweenUIAnimator)target, DOTweenUITrigger.Click);
             }
 
             using (new EditorGUILayout.HorizontalScope())
@@ -70,7 +70,7 @@ namespace DOTweenUI.Editor
             }
         }
 
-        private static void StartPreview(DOTweenUI component, DOTweenUITrigger trigger)
+        private static void StartPreview(DOTweenUIAnimator component, DOTweenUITrigger trigger)
         {
             if (component == null)
                 return;
@@ -198,7 +198,7 @@ namespace DOTweenUI.Editor
             private readonly Dictionary<int, TransformState> transformStates = new();
             private readonly Dictionary<int, CanvasGroupState> canvasGroupStates = new();
 
-            public static PreviewSnapshot Capture(DOTweenUI component)
+            public static PreviewSnapshot Capture(DOTweenUIAnimator component)
             {
                 PreviewSnapshot snapshot = new PreviewSnapshot();
 

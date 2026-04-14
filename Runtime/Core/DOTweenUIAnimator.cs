@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 namespace DOTweenUI
 {
     [DisallowMultipleComponent]
-    public class DOTweenUI : MonoBehaviour,
+    public class DOTweenUIAnimator : MonoBehaviour,
         IPointerEnterHandler,
         IPointerExitHandler,
         IPointerDownHandler,
