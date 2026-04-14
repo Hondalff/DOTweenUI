@@ -17,8 +17,8 @@ namespace DOTweenUI
         [SerializeField] private bool debugLogs;
         [SerializeField] private List<DOTweenUIEntry> animations = new();
 
-        private DOTweenUIRuntimeStore runtimeStore;
-        private DOTweenUIRunnerFactory runnerFactory;
+        private DOTweenUIRuntimeStore _runtimeStore;
+        private DOTweenUIRunnerFactory _runnerFactory;
 
         public IReadOnlyList<DOTweenUIEntry> Animations => animations;
 
@@ -41,7 +41,7 @@ namespace DOTweenUI
         {
             if (killTweensOnDisable)
             {
-                runtimeStore?.KillAll();
+                _runtimeStore?.KillAll();
                 return;
             }
 
@@ -50,7 +50,7 @@ namespace DOTweenUI
 
         private void OnDestroy()
         {
-            runtimeStore?.KillAll();
+            _runtimeStore?.KillAll();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -119,13 +119,13 @@ namespace DOTweenUI
                 if (entry.Trigger != trigger)
                     continue;
 
-                runtimeStore.Kill(entry);
+                _runtimeStore.Kill(entry);
             }
         }
 
         public void StopAll()
         {
-            runtimeStore.KillAll();
+            _runtimeStore.KillAll();
         }
 
         public Tween CreatePreviewTween(DOTweenUIEntry entry)
@@ -135,7 +135,7 @@ namespace DOTweenUI
 
             EnsureInitialized();
 
-            IDOTweenUIAnimationRunner runner = runnerFactory.Get(entry.AnimationType);
+            IDOTweenUIAnimationRunner runner = _runnerFactory.Get(entry.AnimationType);
             Tween tween = runner.CreateTween(entry);
 
             if (tween == null)
@@ -152,10 +152,10 @@ namespace DOTweenUI
 
             if (playback.KillPreviousTweenBeforePlay)
             {
-                runtimeStore.Kill(entry);
+                _runtimeStore.Kill(entry);
             }
 
-            IDOTweenUIAnimationRunner runner = runnerFactory.Get(entry.AnimationType);
+            IDOTweenUIAnimationRunner runner = _runnerFactory.Get(entry.AnimationType);
             Tween tween = runner.CreateTween(entry);
 
             if (tween == null)
@@ -193,7 +193,7 @@ namespace DOTweenUI
             AppendOnKill(tween, () =>
             {
                 entry.Events.OnKill?.Invoke();
-                runtimeStore.Remove(entry);
+                _runtimeStore.Remove(entry);
 
                 if (debugLogs)
                 {
@@ -201,13 +201,13 @@ namespace DOTweenUI
                 }
             });
 
-            runtimeStore.Register(entry, tween);
+            _runtimeStore.Register(entry, tween);
         }
 
         private void EnsureInitialized()
         {
-            runtimeStore ??= new DOTweenUIRuntimeStore();
-            runnerFactory ??= new DOTweenUIRunnerFactory();
+            _runtimeStore ??= new DOTweenUIRuntimeStore();
+            _runnerFactory ??= new DOTweenUIRunnerFactory();
         }
 
         private static void ApplyPlaybackSettings(Tween tween, DOTweenUIPlaybackSettings playback)
