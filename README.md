@@ -30,7 +30,7 @@ DOTween UI allows you to create UI animations directly in the Inspector using tr
 ---
 
 ## Installation (UPM)
-https://github.com/Hondalff/DOTweenUI.git
+https://github.com/Hondalff/unity-dotween-ui-animator.git
 ---
 
 ## Requirements
@@ -95,7 +95,7 @@ DOTween UI — система анимации UI в Unity через инспе
 ---
 
 ## Установка
-https://github.com/Hondalff/DOTweenUI.git
+https://github.com/Hondalff/unity-dotween-ui-animator.git
 ---
 
 ## Требования
