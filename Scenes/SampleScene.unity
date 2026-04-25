@@ -146,7 +146,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265686549}
-  m_LocalRotation: {x: -0, y: -0, z: -0.0015802151, w: 0.99999875}
+  m_LocalRotation: {x: 0, y: 0, z: -0.007871653, w: 0.999969}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -156,7 +156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.00001335144}
+  m_AnchoredPosition: {x: 0, y: -0.90203285}
   m_SizeDelta: {x: 269.9662, y: 107.7809}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &265686551
@@ -175,7 +175,7 @@ MonoBehaviour:
   debugLogs: 0
   animations:
   - id: Show
-    enabled: 1
+    enabled: 0
     trigger: 3
     compositionMode: 0
     insertAt: 0
@@ -227,7 +227,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
   - id: Fade
-    enabled: 1
+    enabled: 0
     trigger: 3
     compositionMode: 1
     insertAt: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
   - id: Enter
-    enabled: 1
+    enabled: 0
     trigger: 4
     compositionMode: 0
     insertAt: 0
@@ -331,7 +331,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
   - id: Exit
-    enabled: 1
+    enabled: 0
     trigger: 5
     compositionMode: 0
     insertAt: 0
@@ -384,7 +384,7 @@ MonoBehaviour:
           m_Calls: []
   - id: Visual up. this not use 2 move
     enabled: 1
-    trigger: 3
+    trigger: 1
     compositionMode: 0
     insertAt: 0
     animationType: 0
@@ -436,7 +436,7 @@ MonoBehaviour:
           m_Calls: []
   - id: Visual up. this not use 2 move
     enabled: 1
-    trigger: 3
+    trigger: 1
     compositionMode: 1
     insertAt: 0
     animationType: 2
