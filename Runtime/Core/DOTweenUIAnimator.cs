@@ -278,7 +278,10 @@ namespace DOTweenUI
         private static void ApplyPlaybackSettings(Tween tween, DOTweenUIPlaybackSettings playback)
         {
             int loops = playback.Loops == 0 ? 1 : playback.Loops;
-
+            
+            if (loops < 0)
+                loops = int.MaxValue;
+            
             tween.SetDelay(playback.Delay)
                 .SetEase(playback.Ease)
                 .SetLoops(loops, playback.LoopType)
